@@ -1,6 +1,6 @@
 galaxy_info:
   author: Chris Smithson
-  description: Used to push a modified version of the picool fan control app to independent RPI
+  description: Used to configure a cluster of Ubuntu servers into a kubernetes cluster
   company: Smithsonite.net
   role_name: kubecluster
 
