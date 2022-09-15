@@ -1,0 +1,153 @@
+---
+- name: Add apt-transport-https
+  ansible.builtin.apt:
+    name: apt-transport-https
+    state: present
+
+- name: Add ca-certificates
+  ansible.builtin.apt:
+    name: ca-certificates
+    state: present
+
+- name: Add curl
+  ansible.builtin.apt:
+    name: curl
+    state: present
+
+- name: Add the overlay module
+  community.general.modprobe:
+    name: overlay
+    state: present
+
+- name: Add the br_netfilter module
+  community.general.modprobe:
+    name: br_netfilter
+    state: present
+
+- name: Copy kubekey script
+  ansible.builtin.copy:
+    src: kubekey.sh
+    dest: /tmp/kubekey.sh
+    owner: root
+    group: root
+    mode: '0755'
+  register: keycopy
+
+- name: Pull Kubernetes key
+  ansible.builtin.command: /bin/bash /tmp/kubekey.sh
+  when: keycopy is succeeded
+
+- name: Add Kubernetes repository to apt
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
+    filename: kubernetes.list
+    state: present
+
+- name: Run the equivalent of "apt-get update" as a separate step
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install containerd
+  ansible.builtin.apt:
+    name: containerd={{ containerdversion }}
+    state: present
+
+- name: Prevent containerd from being upgraded
+  ansible.builtin.dpkg_selections:
+    name: containerd
+    selection: hold
+
+- name: Install runc
+  ansible.builtin.apt:
+    name: runc={{ runcversion }}
+    state: present
+
+- name: Prevent runc from being upgraded
+  ansible.builtin.dpkg_selections:
+    name: runc
+    selection: hold
+
+- name: Install kubelet
+  ansible.builtin.apt:
+    name: kubelet={{ kubeversion }}
+    state: present
+
+- name: Install kubeadm
+  ansible.builtin.apt:
+    name: kubeadm={{ kubeversion }}
+    state: present
+
+- name: Install kubectl
+  ansible.builtin.apt:
+    name: kubectl={{ kubeversion }}
+    state: present
+
+- name: Prevent kubelet from being upgraded
+  ansible.builtin.dpkg_selections:
+    name: kubelet
+    selection: hold
+
+- name: Prevent kubeadm from being upgraded
+  ansible.builtin.dpkg_selections:
+    name: kubeadm
+    selection: hold
+
+- name: Prevent kubectl from being upgraded
+  ansible.builtin.dpkg_selections:
+    name: kubectl
+    selection: hold
+
+- name: Create a CNI directory if it does not exist
+  ansible.builtin.file:
+    path: /opt/cni/bin
+    state: directory
+    mode: '0755'
+  register: makecnidir
+
+- name: List contents of CNI Directory
+  ansible.builtin.command: ls /opt/cni/bin
+  register: cnicontents
+  when: makecnidir is succeeded
+
+- name: Unarchive CNI
+  ansible.builtin.unarchive:
+    src: https://github.com/containernetworking/plugins/releases/download/v1.1.1/cni-plugins-linux-arm-v1.1.1.tgz
+    dest: /opt/cni/bin
+    remote_src: true
+  when: cnicontents.stdout | length == 0
+
+- name: Create containerd config directory
+  ansible.builtin.file:
+    path: /etc/containerd/
+    state: directory
+    mode: '0755'
+
+- name: Copy config.toml
+  ansible.builtin.copy:
+    src: config.toml
+    dest: /etc/containerd/config.toml
+    owner: root
+    group: root
+    mode: '0755'
+  notify:
+    - 'csmithson12345.kubecluster : Restart containerd'
+
+- name: Copy kubernetes.conf to systemctl
+  ansible.builtin.copy:
+    src: kubernetes.conf
+    dest: /etc/sysctl.d/kubernetes.conf
+    owner: root
+    group: root
+    mode: '0755'
+  notify:
+    - 'csmithson12345.kubecluster : Reload sysctl'
+
+- name: Enable service kubelet, and not touch the state
+  ansible.builtin.service:
+    name: kubelet.service
+    enabled: true
+
+- name: Enable service containerd, and not touch the state
+  ansible.builtin.service:
+    name: containerd.service
+    enabled: true
