@@ -11,18 +11,6 @@ This role requires the ability to act as sudo on all of the servers in the clust
 Role Variables
 --------------
 
-<style>
-table {
-    border-collapse: collapse;
-}
-table, th, td {
-   border: 1px solid black;
-}
-blockquote {
-    border-left: solid blue;
-	padding-left: 10px;
-}
-</style>
 
 This role has only a few variables
 | Variable | Defaults | Description | 
