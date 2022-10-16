@@ -3,3 +3,10 @@
 kubeversion: 1.25.0-00
 containerdversion: 1.5.9-0ubuntu3
 runcversion: 1.1.0-0ubuntu1
+cifsstorage: false
+cifsremotepath:
+cifslocalpath:
+cifsoptions:
+cifs_user:
+cifs_password:
+cifscredentialfile:

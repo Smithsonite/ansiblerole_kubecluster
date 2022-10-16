@@ -17,6 +17,7 @@
         "certhash",
         "cgroups",
         "cifs",
+        "cifsstorage",
         "cnicontents",
         "containerd",
         "containerdversion",
@@ -75,5 +76,8 @@
         "vsmarketplacebadge",
         "wifis",
         "wlan"
+    ],
+    "ignoreWords": [
+        "cifslocalpath"
     ]
 }

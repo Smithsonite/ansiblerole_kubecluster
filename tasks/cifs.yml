@@ -1,0 +1,28 @@
+---
+- name: Add cifs-utils
+  ansible.builtin.apt:
+    name: cifs-utils
+    state: present
+  when: cifsstorage
+
+- name: Create a CIFS storage directory if it does not exist
+  ansible.builtin.file:
+    path: '{{ cifslocalpath }}'
+    state: directory
+    mode: '0755'
+  when: cifsstorage
+
+- name: Ansible create credentials file for cifs
+  ansible.builtin.template:
+    src: cifs.j2
+    dest: '{{ cifscredentialfile }}'
+    owner: root
+    group: root
+    mode: '0600'
+  when: cifsstorage
+
+- name: Create fstab entry for the cifs storage
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    line: '`//{{ cifsremotepath }} {{ cifslocalpath }} cifs {{ cifsoptions }}`'
+  when: cifsstorage
