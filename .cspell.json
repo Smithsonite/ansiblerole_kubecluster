@@ -78,6 +78,11 @@
         "wlan"
     ],
     "ignoreWords": [
-        "cifslocalpath"
+        "cifscredentialfile",
+        "cifslocalpath",
+        "cifsoptions",
+        "cifsremotepath",
+        "fstype",
+        "posix"
     ]
 }

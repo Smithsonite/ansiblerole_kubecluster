@@ -21,8 +21,11 @@
     mode: '0600'
   when: cifsstorage
 
-- name: Create fstab entry for the cifs storage
-  ansible.builtin.lineinfile:
-    path: /etc/fstab
-    line: '{{ cifsremotepath }} {{ cifslocalpath }} cifs {{ cifsoptions }}'
+- name: Mount Cifs
+  ansible.posix.mount:
+    path: '{{ cifslocalpath }}'
+    src: '{{ cifsremotepath }}'
+    opts: '{{ cifsoptions }}'
+    fstype: cifs
+    state: mounted
   when: cifsstorage
