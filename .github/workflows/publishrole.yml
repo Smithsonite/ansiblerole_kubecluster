@@ -33,5 +33,7 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
       
+      # - name: Run ansible-lint
+      #   run: ansible-galaxy --help
       - name: Run ansible-lint
-        run: ansible-galaxy --help
+        run: ansible-lint
