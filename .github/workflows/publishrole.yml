@@ -42,9 +42,10 @@ jobs:
         run: ansible-lint
 
       # - name: Publish to Ansible-Galaxy
-      #   run: ansible-galaxy role import -s https://galaxy.ansible.com/ --token ${{ secrets.GALAXY_TOKEN }} ${{ GITHUB_REPOSITORY_OWNER}} ansiblerole_kubecluster
+      #   run: ansible-galaxy role import -s https://galaxy.ansible.com/ --token ${{ secrets.GALAXY_TOKEN }} $GITHUB_REPOSITORY_OWNER ansiblerole_kubecluster
 
       - name: variable validation
         run: |
           echo ${{ secrets.GALAXY_TOKEN }} 
           echo $GITHUB_REPOSITORY_OWNER
+          echo $GITHUB_REPOSITORY
