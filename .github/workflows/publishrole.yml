@@ -11,42 +11,18 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-      
-      # - name: Run ansible-lint
-      #   run: ansible-galaxy --help
       - name: install ansible lint
         run: pip install ansible-lint
 
       - name: Run ansible-lint
         run: ansible-lint
 
-      # - name: Publish to Ansible-Galaxy
-      #   run: ansible-galaxy role import -s https://galaxy.ansible.com/ --token ${{ secrets.GALAXY_TOKEN }} $GITHUB_REPOSITORY_OWNER ansiblerole_kubecluster
-
-      - name: variable validation
-        run: |
-          echo ${{ secrets.GALAXY_TOKEN }} 
-          echo $GITHUB_REPOSITORY_OWNER
-          echo $GITHUB_REPOSITORY
-          echo ${{ github.event.repository.name }}
+      - name: Publish to Ansible-Galaxy
+        run: ansible-galaxy role import -s https://galaxy.ansible.com/ --token ${{ secrets.GALAXY_TOKEN }} $GITHUB_REPOSITORY_OWNER ${{ github.event.repository.name }}
