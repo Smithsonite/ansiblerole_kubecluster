@@ -16,6 +16,7 @@
   ansible.posix.mount:
     path: '{{ nfslocalpath }}'
     src: '{{ nfsremotepath }}'
+    opts: '{{ nfssoptions }}'
     fstype: nfs
     state: mounted
   when: nfsstorage
