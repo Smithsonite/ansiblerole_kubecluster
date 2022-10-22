@@ -49,3 +49,4 @@ jobs:
           echo ${{ secrets.GALAXY_TOKEN }} 
           echo $GITHUB_REPOSITORY_OWNER
           echo $GITHUB_REPOSITORY
+          echo ${{ github.event.repository.name }}
