@@ -17,6 +17,9 @@
 - include_tasks: cifs.yml
   when: cifsstorage
 
+- include_tasks: nfs.yml
+  when: nfsstorage
+
 - name: Add the overlay module
   community.general.modprobe:
     name: overlay
