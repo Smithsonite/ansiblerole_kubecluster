@@ -37,6 +37,14 @@ jobs:
       #   run: ansible-galaxy --help
       - name: install ansible lint
         run: pip install ansible-lint
-        
+
       - name: Run ansible-lint
         run: ansible-lint
+
+      # - name: Publish to Ansible-Galaxy
+      #   run: ansible-galaxy role import -s https://galaxy.ansible.com/ --token ${{ secrets.GALAXY_TOKEN }} ${{ GITHUB_REPOSITORY_OWNER}} ansiblerole_kubecluster
+
+      - name: variable validation
+        run: |
+          echo ${{ secrets.GALAXY_TOKEN }} 
+          echo ${{ GITHUB_REPOSITORY_OWNER}} 
