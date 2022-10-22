@@ -2,7 +2,7 @@ galaxy_info:
   author: Chris Smithson
   description: Used to configure a cluster of Ubuntu servers into a kubernetes cluster
   company: Smithsonite.net
-  namespace: Smithsonite
+  namespace: csmithson12345
   role_name: kubecluster
 
   # If the issue tracker for your role is not on github, uncomment the
