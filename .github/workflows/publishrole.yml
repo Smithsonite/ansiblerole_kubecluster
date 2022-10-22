@@ -34,4 +34,4 @@ jobs:
           echo test, and deploy your project.
       
       - name: Run ansible-lint
-        run: ansible --help
+        run: ansible-galaxy --help
