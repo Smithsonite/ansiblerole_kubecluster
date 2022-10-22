@@ -14,10 +14,12 @@
     name: curl
     state: present
 
-- include_tasks: cifs.yml
+- name: Configure Cifs mount
+  ansible.builtin.include_tasks: cifs.yml
   when: cifsstorage
 
-- include_tasks: nfs.yml
+- name: Configure NFS Mount
+  ansible.builtin.include_tasks: nfs.yml
   when: nfsstorage
 
 - name: Add the overlay module
