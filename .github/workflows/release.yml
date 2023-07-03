@@ -22,6 +22,10 @@ jobs:
         shell: bash
         run: |
           echo "COMMITTAG"="$(git describe --tag --abbrev=0)" >> $GITHUB_ENV
+
+      - name: Check Tag Version Syntax
+        uses: smithsonite/checkalltags@v1
+
       - name: echo the tag
         shell: bash
         run: |
