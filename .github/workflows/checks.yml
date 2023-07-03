@@ -22,4 +22,4 @@ jobs:
         uses: ansible/ansible-lint-action@v6.10.0
       
       - name: Check Tag Version Syntax
-        uses: Smithsonite/CheckAllTags@v1
+        uses: smithsonite/checkalltags@v1
