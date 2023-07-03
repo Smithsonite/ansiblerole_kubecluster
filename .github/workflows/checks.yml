@@ -11,5 +11,5 @@ on:
 
 jobs:
   status_checks:
-    uses: smithsonite/RequiredWorkflows/.github/workflows/checks.yml@main
+    uses: smithsonite/RequiredWorkflows/.github/workflows/ansible_checks.yml@main
     
