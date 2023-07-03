@@ -11,33 +11,5 @@ env:
 
 jobs:
   deploy_release:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: list current tag
-        shell: bash
-        run: |
-          echo "COMMITTAG"="$(git describe --tag --abbrev=0)" >> $GITHUB_ENV
-
-      - name: Check Tag Version Syntax
-        uses: smithsonite/checkalltags@v1
-
-      - name: echo the tag
-        shell: bash
-        run: |
-          echo "${{ env.COMMITTAG }}"
-          if [ -z "${{ env.COMMITTAG }}"]
-          then
-            exit 1
-          fi
-      - name: create release
-        shell: bash
-        run: |
-          gh release create ${{ env.COMMITTAG }} --title "${{ env.COMMITTAG }}"
-
-      - name: Publish to Ansible-Galaxy
-        run: ansible-galaxy role import -s https://galaxy.ansible.com/ --token ${{ secrets.GALAXY_API_KEY }} $GITHUB_REPOSITORY_OWNER ${{ github.event.repository.name }}
+    uses: smithsonite/RequiredWorkflows/.github/workflows/release.yml@main
+    
