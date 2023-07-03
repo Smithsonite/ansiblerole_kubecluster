@@ -11,15 +11,5 @@ on:
 
 jobs:
   status_checks:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # needed for progressive mode to work
-
-      - name: Run ansible-lint
-        uses: ansible/ansible-lint-action@v6.10.0
-      
-      - name: Check Tag Version Syntax
-        uses: smithsonite/checkalltags@v1
+    uses: smithsonite/RequiredWorkflows/.github/workflows/checks.yml@main
+    
