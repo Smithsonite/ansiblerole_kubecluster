@@ -11,5 +11,5 @@ env:
 
 jobs:
   deploy_release:
-    uses: smithsonite/RequiredWorkflows/.github/workflows/release.yml@main
+    uses: smithsonite/RequiredWorkflows/.github/workflows/ansible_release.yml@main
     
