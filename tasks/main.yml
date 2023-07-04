@@ -59,6 +59,7 @@
   ansible.builtin.apt:
     name: containerd={{ containerdversion }}
     state: present
+    allow_downgrade: true
 
 - name: Prevent containerd from being upgraded
   ansible.builtin.dpkg_selections:
@@ -69,6 +70,7 @@
   ansible.builtin.apt:
     name: runc={{ runcversion }}
     state: present
+    allow_downgrade: true
 
 - name: Prevent runc from being upgraded
   ansible.builtin.dpkg_selections:
@@ -79,16 +81,19 @@
   ansible.builtin.apt:
     name: kubelet={{ kubeversion }}
     state: present
+    allow_downgrade: true
 
 - name: Install kubeadm
   ansible.builtin.apt:
     name: kubeadm={{ kubeversion }}
     state: present
+    allow_downgrade: true
 
 - name: Install kubectl
   ansible.builtin.apt:
     name: kubectl={{ kubeversion }}
     state: present
+    allow_downgrade: true
 
 - name: Prevent kubelet from being upgraded
   ansible.builtin.dpkg_selections:
