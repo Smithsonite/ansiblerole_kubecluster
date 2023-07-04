@@ -55,6 +55,16 @@
   ansible.builtin.apt:
     update_cache: true
 
+- name: Install extra kernel modules
+  ansible.builtin.apt:
+    name: linux-modules-extra-raspi
+    state: present
+
+- name: Add the configs module
+  community.general.modprobe:
+    name: configs
+    state: present
+
 - name: Install containerd
   ansible.builtin.apt:
     name: containerd={{ containerdversion }}
