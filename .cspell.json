@@ -50,6 +50,7 @@
         "netfilter",
         "Netplan",
         "networkd",
+        "nfsstorage",
         "nodeport",
         "NOPASSWD",
         "oscdimg",
