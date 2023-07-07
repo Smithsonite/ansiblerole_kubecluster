@@ -1,4 +1,14 @@
 ---
+- name: Add DNS information
+  ansible.builtin.lineinfile:
+    path: /etc/resolv.conf
+    line: 'nameserver 192.168.1.231'
+
+- name: Add search domain information
+  ansible.builtin.lineinfile:
+    path: /etc/resolv.conf
+    line: 'search smithsonite.home'
+
 - name: Add apt-transport-https
   ansible.builtin.apt:
     name: apt-transport-https
