@@ -192,7 +192,8 @@
     owner: root
     group: root
     mode: '0644'
-  when: ansible_hostname == 'smitkub1.smithsonite.home'
+  when: ansible_hostname == 'autobot.smithsonite.home'
+  register: netplan
 
 - name: Copy ISCSI config to smitkub1
   ansible.builtin.copy:
@@ -202,6 +203,7 @@
     group: root
     mode: '0644'
   when: ansible_hostname == 'smitkub1.smithsonite.home'
+  register: netplan
 
 - name: Copy ISCSI config to smitkub2
   ansible.builtin.copy:
@@ -211,6 +213,7 @@
     group: root
     mode: '0644'
   when: ansible_hostname == 'smitkub2.smithsonite.home'
+  register: netplan
 
 - name: Copy ISCSI config to smitkub3
   ansible.builtin.copy:
@@ -220,6 +223,7 @@
     group: root
     mode: '0644'
   when: ansible_hostname == 'smitkub3.smithsonite.home'
+  register: netplan
 
 - name: Copy netplan script
   ansible.builtin.copy:
@@ -231,3 +235,4 @@
 
 - name: Restart netplan
   ansible.builtin.command: /bin/bash /tmp/kubekey.sh
+  when: netplan is succeeded
