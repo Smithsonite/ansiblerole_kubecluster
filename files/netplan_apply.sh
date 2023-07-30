@@ -1,2 +1,2 @@
 #! /bin/bash
-netplan try
+netplan apply
