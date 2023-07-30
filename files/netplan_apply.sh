@@ -1,2 +1,2 @@
 #! /bin/bash
-netplan apply
+netplan apply && reboot
