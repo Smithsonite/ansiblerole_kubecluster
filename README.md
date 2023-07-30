@@ -22,7 +22,7 @@ This role has only a few variables
 Dependencies
 ------------
 
-N/A
+Module community.general
 
 Example Playbook
 ----------------
