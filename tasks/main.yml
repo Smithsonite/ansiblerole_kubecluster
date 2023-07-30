@@ -184,3 +184,55 @@
   ansible.builtin.service:
     name: containerd.service
     enabled: true
+
+- name: Copy ISCSI config to autobot
+  ansible.builtin.copy:
+    src: autobot-eth0.yml
+    dest: /etc/netplan/eth0.yml
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_hostname == 'autobot.smithsonite.home'
+  register: netplan
+
+- name: Copy ISCSI config to smitkub1
+  ansible.builtin.copy:
+    src: smitkub1-eth0.yml
+    dest: /etc/netplan/eth0.yml
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_hostname == 'smitkub1.smithsonite.home'
+  register: netplan
+
+- name: Copy ISCSI config to smitkub2
+  ansible.builtin.copy:
+    src: smitkub2-eth0.yml
+    dest: /etc/netplan/eth0.yml
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_hostname == 'smitkub2.smithsonite.home'
+  register: netplan
+
+- name: Copy ISCSI config to smitkub3
+  ansible.builtin.copy:
+    src: smitkub3-eth0.yml
+    dest: /etc/netplan/eth0.yml
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_hostname == 'smitkub3.smithsonite.home'
+  register: netplan
+
+- name: Copy netplan script
+  ansible.builtin.copy:
+    src: netplan_apply.sh
+    dest: /tmp/netplan_apply.sh
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Restart netplan
+  ansible.builtin.command: /bin/bash /tmp/kubekey.sh
+  when: netplan is succeeded

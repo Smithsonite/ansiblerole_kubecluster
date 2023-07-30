@@ -44,6 +44,3 @@ License
 -------
 
 MIT
-
-
-comment for the CI gods
