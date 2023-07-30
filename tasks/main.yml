@@ -203,7 +203,7 @@
 - name: Copy ISCSI config to smitkub1
   ansible.builtin.copy:
     src: smitkub1-eth0.yml
-    dest: /etc/netplan/eth0.yml
+    dest: /etc/netplan/10-eth0.yaml
     owner: root
     group: root
     mode: '0644'
@@ -213,7 +213,7 @@
 - name: Copy ISCSI config to smitkub2
   ansible.builtin.copy:
     src: smitkub2-eth0.yml
-    dest: /etc/netplan/eth0.yml
+    dest: /etc/netplan/10-eth0.yaml
     owner: root
     group: root
     mode: '0644'
@@ -223,7 +223,7 @@
 - name: Copy ISCSI config to smitkub3
   ansible.builtin.copy:
     src: smitkub3-eth0.yml
-    dest: /etc/netplan/eth0.yml
+    dest: /etc/netplan/10-eth0.yaml
     owner: root
     group: root
     mode: '0644'
