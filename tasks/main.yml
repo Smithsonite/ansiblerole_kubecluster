@@ -239,5 +239,5 @@
     mode: '0755'
 
 - name: Restart netplan
-  ansible.builtin.command: /bin/bash /tmp/kubekey.sh
+  ansible.builtin.command: /bin/bash /tmp/netplan_apply.sh
   when: netplan is succeeded
