@@ -241,3 +241,9 @@
 - name: Restart netplan
   ansible.builtin.command: /bin/bash /tmp/netplan_apply.sh
   when: netplan is succeeded
+  poll: 0
+  async: 45
+
+- name: Wait for system to become reachable
+  ansible.builtin.wait_for_connection:
+    timeout: 900
