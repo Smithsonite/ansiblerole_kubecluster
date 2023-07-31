@@ -193,11 +193,11 @@
 - name: Copy ISCSI config to autobot
   ansible.builtin.copy:
     src: autobot-eth0.yml
-    dest: /etc/netplan/eth0.yml
+    dest: /etc/netplan/10-eth0.yml
     owner: root
     group: root
     mode: '0644'
-  when: inventory_hostname == 'autobot.smithsonite.home'
+  delegate_to: 127.0.0.1
   register: netplan
 
 - name: Copy ISCSI config to smitkub1
