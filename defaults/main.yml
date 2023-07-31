@@ -1,7 +1,7 @@
 ---
 # defaults file for kubecluster
 kubeversion: 1.26.*
-containerdversion: 1.6.12-0ubuntu1~22.04.1
+containerdversion: 1.6.12-0ubuntu1~22.04.3
 runcversion: 1.1.4-0ubuntu1~22.04.3
 cifsstorage: false
 cifsremotepath:
