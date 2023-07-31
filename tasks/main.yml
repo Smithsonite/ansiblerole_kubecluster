@@ -193,7 +193,7 @@
 - name: Copy ISCSI config to autobot
   ansible.builtin.copy:
     src: autobot-eth0.yml
-    dest: /etc/netplan/10-eth0.yml
+    dest: /etc/netplan/10-eth0.yaml
     owner: root
     group: root
     mode: '0644'
