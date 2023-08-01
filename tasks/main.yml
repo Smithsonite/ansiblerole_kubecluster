@@ -208,7 +208,7 @@
     group: root
     mode: '0644'
   delegate_to: 127.0.0.1
-  when: ansible_facts['eth0']['ipv4'][address] is not ['192.168.2.230']
+  when: ansible_facts['ansible_eth0']['ipv4']['address'] is not ['192.168.2.230']
 
 - name: Copy ISCSI config to smitkub1
   ansible.builtin.copy:
