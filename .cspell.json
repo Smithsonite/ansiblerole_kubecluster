@@ -31,6 +31,7 @@
         "githubusercontent",
         "HashiCorp",
         "healthcheck",
+        "hostvars",
         "keycopy",
         "keypair",
         "keyrings",
