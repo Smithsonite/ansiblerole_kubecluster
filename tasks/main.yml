@@ -54,6 +54,7 @@
 - name: Pull Kubernetes key
   ansible.builtin.command: /bin/bash /tmp/kubekey.sh
   when: keycopy is succeeded
+  changed_when: true
 
 - name: Add Kubernetes repository to apt
   ansible.builtin.apt_repository:
@@ -146,6 +147,7 @@
   ansible.builtin.command: ls /opt/cni/bin
   register: cnicontents
   when: makecnidir is succeeded
+  changed_when: true
 
 - name: Unarchive CNI
   ansible.builtin.unarchive:
@@ -243,6 +245,7 @@
   when: netplan is succeeded
   poll: 0
   async: 45
+  changed_when: true
 
 - name: Wait for system to become reachable
   ansible.builtin.wait_for_connection:
