@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: Test Role
+  hosts: localhost
   remote_user: root
   roles:
     - csmithson12345.kubecluster

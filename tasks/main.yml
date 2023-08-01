@@ -54,6 +54,7 @@
 - name: Pull Kubernetes key
   ansible.builtin.command: /bin/bash /tmp/kubekey.sh
   when: keycopy is succeeded
+  changed_when: true
 
 - name: Add Kubernetes repository to apt
   ansible.builtin.apt_repository:
@@ -146,6 +147,7 @@
   ansible.builtin.command: ls /opt/cni/bin
   register: cnicontents
   when: makecnidir is succeeded
+  changed_when: true
 
 - name: Unarchive CNI
   ansible.builtin.unarchive:
@@ -190,46 +192,6 @@
     name: containerd.service
     enabled: true
 
-- name: Copy ISCSI config to autobot
-  ansible.builtin.copy:
-    src: autobot-eth0.yml
-    dest: /etc/netplan/10-eth0.yaml
-    owner: root
-    group: root
-    mode: '0644'
-  delegate_to: 127.0.0.1
-  register: netplan
-
-- name: Copy ISCSI config to smitkub1
-  ansible.builtin.copy:
-    src: smitkub1-eth0.yml
-    dest: /etc/netplan/10-eth0.yaml
-    owner: root
-    group: root
-    mode: '0644'
-  when: inventory_hostname == 'smitkub1.smithsonite.home'
-  register: netplan
-
-- name: Copy ISCSI config to smitkub2
-  ansible.builtin.copy:
-    src: smitkub2-eth0.yml
-    dest: /etc/netplan/10-eth0.yaml
-    owner: root
-    group: root
-    mode: '0644'
-  when: inventory_hostname == 'smitkub2.smithsonite.home'
-  register: netplan
-
-- name: Copy ISCSI config to smitkub3
-  ansible.builtin.copy:
-    src: smitkub3-eth0.yml
-    dest: /etc/netplan/10-eth0.yaml
-    owner: root
-    group: root
-    mode: '0644'
-  when: inventory_hostname == 'smitkub3.smithsonite.home'
-  register: netplan
-
 - name: Copy netplan script
   ansible.builtin.copy:
     src: netplan_apply.sh
@@ -238,11 +200,45 @@
     group: root
     mode: '0755'
 
-- name: Restart netplan
-  ansible.builtin.command: /bin/bash /tmp/netplan_apply.sh
-  when: netplan is succeeded
-  poll: 0
-  async: 45
+- name: Copy ISCSI config to autobot
+  ansible.builtin.copy:
+    src: autobot-eth0.yml
+    dest: /etc/netplan/10-eth0.yaml
+    owner: root
+    group: root
+    mode: '0644'
+  delegate_to: 127.0.0.1
+  when: ansible_facts['eth0']['ipv4'][address] is not ['192.168.2.230']
+
+- name: Copy ISCSI config to smitkub1
+  ansible.builtin.copy:
+    src: smitkub1-eth0.yml
+    dest: /etc/netplan/10-eth0.yaml
+    owner: root
+    group: root
+    mode: '0644'
+  when: inventory_hostname == 'smitkub1.smithsonite.home' and ansible_facts['eth0']['ipv4'][address] is not ['192.168.2.232']
+  notify: Restart netplan
+
+- name: Copy ISCSI config to smitkub2
+  ansible.builtin.copy:
+    src: smitkub2-eth0.yml
+    dest: /etc/netplan/10-eth0.yaml
+    owner: root
+    group: root
+    mode: '0644'
+  when: inventory_hostname == 'smitkub2.smithsonite.home' and ansible_facts['eth0']['ipv4'][address] is not ['192.168.2.233']
+  notify: Restart netplan
+
+- name: Copy ISCSI config to smitkub3
+  ansible.builtin.copy:
+    src: smitkub3-eth0.yml
+    dest: /etc/netplan/10-eth0.yaml
+    owner: root
+    group: root
+    mode: '0644'
+  when: inventory_hostname == 'smitkub3.smithsonite.home' and ansible_facts['eth0']['ipv4'][address] is not ['192.168.2.234']
+  notify: Restart netplan
 
 - name: Wait for system to become reachable
   ansible.builtin.wait_for_connection:
