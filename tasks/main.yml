@@ -233,15 +233,15 @@
         (ansible_facts['ansible_eth0']['ipv4']['address'] is not ['192.168.2.234'])
   notify: Restart netplan
 
-- name: Copy ISCSI config to autobot
-  ansible.builtin.copy:
-    src: autobot-eth0.yml
-    dest: /etc/netplan/10-eth0.yaml
-    owner: root
-    group: root
-    mode: '0644'
-  delegate_to: 127.0.0.1
-  when: ansible_facts['ansible_eth0']['ipv4']['address'] is not ['192.168.2.230']
+# - name: Copy ISCSI config to autobot
+#   ansible.builtin.copy:
+#     src: autobot-eth0.yml
+#     dest: /etc/netplan/10-eth0.yaml
+#     owner: root
+#     group: root
+#     mode: '0644'
+#   delegate_to: 127.0.0.1
+#   when: ansible_facts['ansible_eth0']['ipv4']['address'] is not ['192.168.2.230']
 
 - name: Wait for system to become reachable
   ansible.builtin.wait_for_connection:
