@@ -217,7 +217,7 @@
     owner: root
     group: root
     mode: '0644'
-  when: inventory_hostname == 'smitkub1.smithsonite.home' and {{ hostvars['smitkube1.smithsonite.home']['ansible_eth0']['ipv4']['address'] is not ['192.168.2.232']}}
+  when: inventory_hostname == 'smitkub1.smithsonite.home' and ansible_facts['smitkube1.smithsonite.home']['ansible_eth0']['ipv4']['address'] is not ['192.168.2.232']
   notify: Restart netplan
 
 - name: Copy ISCSI config to smitkub2
@@ -227,7 +227,7 @@
     owner: root
     group: root
     mode: '0644'
-  when: inventory_hostname == 'smitkub2.smithsonite.home' and {{ hostvars['smitkube2.smithsonite.home']['ansible_eth0']['ipv4']['address'] is not ['192.168.2.233']}}
+  when: inventory_hostname == 'smitkub2.smithsonite.home' and ansible_facts['smitkube2.smithsonite.home']['ansible_eth0']['ipv4']['address'] is not ['192.168.2.233']
   notify: Restart netplan
 
 - name: Copy ISCSI config to smitkub3
@@ -237,7 +237,7 @@
     owner: root
     group: root
     mode: '0644'
-  when: inventory_hostname == 'smitkub3.smithsonite.home' and {{ hostvars['smitkube3.smithsonite.home']['ansible_eth0']['ipv4']['address'] is not ['192.168.2.234']}}
+  when: inventory_hostname == 'smitkub3.smithsonite.home' and ansible_facts['smitkube3.smithsonite.home']['ansible_eth0']['ipv4']['address'] is not ['192.168.2.234']
   notify: Restart netplan
 
 - name: Wait for system to become reachable
