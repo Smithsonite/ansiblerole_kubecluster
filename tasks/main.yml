@@ -54,6 +54,7 @@
 - name: Pull Kubernetes key
   ansible.builtin.command: /bin/bash /tmp/kubekey.sh
   when: keycopy is succeeded
+  changed_when: true
 
 - name: Add Kubernetes repository to apt
   ansible.builtin.apt_repository:
@@ -146,6 +147,7 @@
   ansible.builtin.command: ls /opt/cni/bin
   register: cnicontents
   when: makecnidir is succeeded
+  changed_when: true
 
 - name: Unarchive CNI
   ansible.builtin.unarchive:
@@ -190,6 +192,14 @@
     name: containerd.service
     enabled: true
 
+- name: Copy netplan script
+  ansible.builtin.copy:
+    src: netplan_apply.sh
+    dest: /tmp/netplan_apply.sh
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: Copy ISCSI config to autobot
   ansible.builtin.copy:
     src: autobot-eth0.yml
@@ -207,8 +217,15 @@
     owner: root
     group: root
     mode: '0644'
-  when: inventory_hostname == 'smitkub1.smithsonite.home'
-  register: netplan
+  when: inventory_hostname == 'smitkub1.smithsonite.home' and ansible_facts['eth0']['ipv4'] is not ['192.168.2.232']
+  register: smitkub1netplan
+
+- name: Restart netplan
+  ansible.builtin.command: /bin/bash /tmp/netplan_apply.sh
+  when: smitkub1netplan is changed
+  poll: 0
+  async: 45
+  changed_when: true
 
 - name: Copy ISCSI config to smitkub2
   ansible.builtin.copy:
@@ -217,8 +234,16 @@
     owner: root
     group: root
     mode: '0644'
-  when: inventory_hostname == 'smitkub2.smithsonite.home'
-  register: netplan
+  when: inventory_hostname == 'smitkub2.smithsonite.home' and ansible_facts['eth0']['ipv4'] is not ['192.168.2.233']
+  register: smitkub2netplan
+
+
+- name: Restart netplan
+  ansible.builtin.command: /bin/bash /tmp/netplan_apply.sh
+  when: smitkub2netplan is changed
+  poll: 0
+  async: 45
+  changed_when: true
 
 - name: Copy ISCSI config to smitkub3
   ansible.builtin.copy:
@@ -227,22 +252,15 @@
     owner: root
     group: root
     mode: '0644'
-  when: inventory_hostname == 'smitkub3.smithsonite.home'
-  register: netplan
-
-- name: Copy netplan script
-  ansible.builtin.copy:
-    src: netplan_apply.sh
-    dest: /tmp/netplan_apply.sh
-    owner: root
-    group: root
-    mode: '0755'
+  when: inventory_hostname == 'smitkub3.smithsonite.home' and ansible_facts['eth0']['ipv4'] is not ['192.168.2.234']
+  register: smitkub3netplan
 
 - name: Restart netplan
   ansible.builtin.command: /bin/bash /tmp/netplan_apply.sh
-  when: netplan is succeeded
+  when: smitkub3netplan is succeeded
   poll: 0
   async: 45
+  changed_when: true
 
 - name: Wait for system to become reachable
   ansible.builtin.wait_for_connection:
