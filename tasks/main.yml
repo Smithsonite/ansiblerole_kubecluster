@@ -192,6 +192,15 @@
     name: containerd.service
     enabled: true
 
+- name: Copy promisc service
+  ansible.builtin.copy:
+    src: promisc.service
+    dest: /etc/systemd/system/promisc.service
+    owner: root
+    group: root
+    mode: '0755'
+  notify: Enable service promisc
+
 - name: Copy netplan script
   ansible.builtin.copy:
     src: netplan_apply.sh
