@@ -207,9 +207,10 @@
     owner: root
     group: root
     mode: '0644'
-  when: (inventory_hostname == 'smitkub1.smithsonite.home') and
-        (ansible_facts['ansible_eth0']['ipv4']['address'] is not ['192.168.2.232'])
-  notify: Restart netplan
+  when:
+    - ansible_facts['eth0']['ipv4']['address'] != '192.168.2.232'
+    - inventory_hostname == 'smitkub1.smithsonite.home'
+  notify: Restart netplan smitkub1
 
 - name: Copy ISCSI config to smitkub2
   ansible.builtin.copy:
@@ -218,9 +219,10 @@
     owner: root
     group: root
     mode: '0644'
-  when: (inventory_hostname == 'smitkub2.smithsonite.home') and
-        (ansible_facts['ansible_eth0']['ipv4']['address'] is not ['192.168.2.233'])
-  notify: Restart netplan
+  when:
+    - ansible_facts['eth0']['ipv4']['address'] != '192.168.2.233'
+    - inventory_hostname == 'smitkub2.smithsonite.home'
+  notify: Restart netplan smitkub2
 
 - name: Copy ISCSI config to smitkub3
   ansible.builtin.copy:
@@ -229,19 +231,22 @@
     owner: root
     group: root
     mode: '0644'
-  when: (inventory_hostname == 'smitkub3.smithsonite.home') and
-        (ansible_facts['ansible_eth0']['ipv4']['address'] is not ['192.168.2.234'])
-  notify: Restart netplan
+  when:
+    - ansible_facts['eth0']['ipv4']['address'] != '192.168.2.234'
+    - inventory_hostname == 'smitkub3.smithsonite.home'
+  notify: Restart netplan smitkub3
 
-# - name: Copy ISCSI config to autobot
-#   ansible.builtin.copy:
-#     src: autobot-eth0.yml
-#     dest: /etc/netplan/10-eth0.yaml
-#     owner: root
-#     group: root
-#     mode: '0644'
-#   delegate_to: 127.0.0.1
-#   when: ansible_facts['ansible_eth0']['ipv4']['address'] is not ['192.168.2.230']
+- name: Copy ISCSI config to autobot
+  ansible.builtin.copy:
+    src: autobot-eth0.yml
+    dest: /etc/netplan/10-eth0.yaml
+    owner: root
+    group: root
+    mode: '0644'
+  when:
+    - inventory_hostname == 'localhost'
+    - ansible_facts['eth0']['ipv4']['address'] != '192.168.2.230'
+  notify: Restart netplan autobot
 
 - name: Wait for system to become reachable
   ansible.builtin.wait_for_connection:
